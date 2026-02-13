@@ -1,14 +1,23 @@
 {
   "name": "agentkit-guardrails",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "vitest run"
+  "description": "Reactive policy enforcement: auto-tighten AgentGate policies when AgentLens metrics breach thresholds",
+  "main": "dist/index.js",
+  "bin": {
+    "agentkit-guardrails": "dist/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["agentkit", "guardrails", "agentgate", "agentlens", "policy", "ai-safety"],
+  "author": "Amit Paz",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitpaz/agentkit-guardrails"
+  },
   "type": "commonjs",
   "dependencies": {
     "fastify": "^5.7.4",
