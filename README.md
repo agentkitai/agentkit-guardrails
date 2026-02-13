@@ -130,6 +130,20 @@ See `docker-compose.yml` for a complete 3-service setup.
 | Duplicate overrides | This shouldn't happen — the service is idempotent. Check logs for errors |
 | Port already in use | Change `server.port` in config.yaml |
 
+
+## 🧰 AgentKit Ecosystem
+
+| Project | Description | |
+|---------|-------------|-|
+| [AgentLens](https://github.com/agentkitai/agentlens) | Observability & audit trail for AI agents | |
+| [Lore](https://github.com/agentkitai/lore) | Cross-agent memory and lesson sharing | |
+| [AgentGate](https://github.com/agentkitai/agentgate) | Human-in-the-loop approval gateway | |
+| [FormBridge](https://github.com/agentkitai/formbridge) | Agent-human mixed-mode forms | |
+| [AgentEval](https://github.com/agentkitai/agenteval) | Testing & evaluation framework | |
+| [agentkit-mesh](https://github.com/agentkitai/agentkit-mesh) | Agent discovery & delegation | |
+| [agentkit-cli](https://github.com/agentkitai/agentkit-cli) | Unified CLI orchestrator | |
+| **agentkit-guardrails** | Reactive policy guardrails | ⬅️ you are here |
+
 ## License
 
 ISC
