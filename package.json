@@ -16,7 +16,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amitpaz/agentkit-guardrails"
+    "url": "https://github.com/agentkitai/agentkit-guardrails"
   },
   "type": "commonjs",
   "dependencies": {
