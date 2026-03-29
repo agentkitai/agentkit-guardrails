@@ -1,6 +1,17 @@
-# agentkit-guardrails
+<p align="center">
+  <h1 align="center">🛡️ agentkit-guardrails</h1>
+  <p align="center">
+    <strong>Reactive policy enforcement for AI agents</strong><br>
+    Watches metrics from AgentLens and automatically tightens AgentGate policies when thresholds are breached.
+  </p>
+  <p align="center">
+    <a href="https://www.npmjs.com/package/agentkit-guardrails"><img src="https://img.shields.io/npm/v/agentkit-guardrails?label=npm" alt="npm version"></a>
+    <a href="https://opensource.org/licenses/ISC"><img src="https://img.shields.io/badge/license-ISC-blue.svg" alt="License: ISC"></a>
+    <a href="https://github.com/agentkitai/agentkit-guardrails/actions"><img src="https://img.shields.io/github/actions/workflow/status/agentkitai/agentkit-guardrails/ci.yml?branch=main" alt="CI"></a>
+  </p>
+</p>
 
-Reactive policy enforcement for AI agents. Watches metrics from **AgentLens** and automatically tightens **AgentGate** policies when thresholds are breached.
+---
 
 ## Architecture
 
@@ -130,6 +141,9 @@ See `docker-compose.yml` for a complete 3-service setup.
 | Duplicate overrides | This shouldn't happen — the service is idempotent. Check logs for errors |
 | Port already in use | Change `server.port` in config.yaml |
 
+## 🤝 Contributing
+
+Contributions are welcome! Fork the repo, make your changes, and open a pull request. For major changes, open an issue first to discuss what you'd like to change.
 
 ## 🧰 AgentKit Ecosystem
 
@@ -146,4 +160,4 @@ See `docker-compose.yml` for a complete 3-service setup.
 
 ## License
 
-ISC
+[ISC](LICENSE) © [Amit Paz](https://github.com/amitpaz)
