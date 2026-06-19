@@ -17,6 +17,9 @@ const ConfigSchema = z.object({
   }),
   server: z.object({
     port: z.number().int().positive().default(3010),
+    // FIX 3: shared secret for /webhook auth. Sourced from env (GUARDRAILS_WEBHOOK_SECRET),
+    // not the YAML, so it is not committed alongside config. Unset => /webhook fails closed.
+    webhookSecret: z.string().optional(),
   }),
   rules: z.array(RuleSchema).min(1),
 });
@@ -27,5 +30,10 @@ export type Rule = z.infer<typeof RuleSchema>;
 export function loadConfig(path: string): Config {
   const raw = readFileSync(path, 'utf-8');
   const parsed = parseYaml(raw);
-  return ConfigSchema.parse(parsed);
+  const config = ConfigSchema.parse(parsed);
+  // FIX 3: env wins for the webhook secret (keeps it out of YAML).
+  if (process.env.GUARDRAILS_WEBHOOK_SECRET) {
+    config.server.webhookSecret = process.env.GUARDRAILS_WEBHOOK_SECRET;
+  }
+  return config;
 }

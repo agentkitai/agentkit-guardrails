@@ -3,9 +3,12 @@ import { buildServer } from '../server.js';
 import { Config } from '../config.js';
 import { GateClient } from '../gate-client.js';
 
+const SECRET = 'test-secret';
+const AUTH = { 'x-guardrails-secret': SECRET };
+
 const multiRuleConfig: Config = {
   agentgate: { url: 'http://localhost:3002' },
-  server: { port: 0 },
+  server: { port: 0, webhookSecret: SECRET },
   rules: [
     { metric: 'error_rate', action: 'require_approval', toolPattern: '*', ttlSeconds: 3600, reason: 'Error rate high' },
     { metric: 'latency_p99', action: 'deny', toolPattern: 'external_api.*', ttlSeconds: 1800, reason: 'Latency spike' },
@@ -43,23 +46,23 @@ describe('integration: full breach → recovery → idempotency flow', () => {
     const { app, activeOverrides } = buildServer(multiRuleConfig, client);
 
     // 1. Breach → override created
-    const r1 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('breach', 'error_rate') });
+    const r1 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('breach', 'error_rate') });
     expect(r1.statusCode).toBe(201);
     expect(JSON.parse(r1.body).status).toBe('override_created');
     expect(activeOverrides.size).toBe(1);
 
     // 2. Recovery → override removed
-    const r2 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('recovery', 'error_rate') });
+    const r2 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('recovery', 'error_rate') });
     expect(r2.statusCode).toBe(200);
     expect(JSON.parse(r2.body).status).toBe('override_removed');
     expect(activeOverrides.size).toBe(0);
 
     // 3. Breach again → new override created (not duplicate since previous was removed)
-    const r3 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('breach', 'error_rate') });
+    const r3 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('breach', 'error_rate') });
     expect(r3.statusCode).toBe(201);
 
     // 4. Duplicate breach → idempotent
-    const r4 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('breach', 'error_rate') });
+    const r4 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('breach', 'error_rate') });
     expect(r4.statusCode).toBe(200);
     expect(JSON.parse(r4.body).status).toBe('already_active');
     expect(client.createOverride).toHaveBeenCalledTimes(2); // only 2 creates total
@@ -70,11 +73,11 @@ describe('integration: full breach → recovery → idempotency flow', () => {
     const { app, activeOverrides } = buildServer(multiRuleConfig, client);
 
     // Breach error_rate
-    const r1 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('breach', 'error_rate') });
+    const r1 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('breach', 'error_rate') });
     expect(r1.statusCode).toBe(201);
 
     // Breach latency_p99 — independent rule
-    const r2 = await app.inject({ method: 'POST', url: '/webhook', payload: webhook('breach', 'latency_p99') });
+    const r2 = await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('breach', 'latency_p99') });
     expect(r2.statusCode).toBe(201);
 
     // Both active
@@ -87,7 +90,7 @@ describe('integration: full breach → recovery → idempotency flow', () => {
     expect(calls[1][0].toolPattern).toBe('external_api.*');
 
     // Recover one, other stays
-    await app.inject({ method: 'POST', url: '/webhook', payload: webhook('recovery', 'error_rate') });
+    await app.inject({ method: 'POST', url: '/webhook', headers: AUTH, payload: webhook('recovery', 'error_rate') });
     expect(activeOverrides.size).toBe(1);
     expect(activeOverrides.has('agent-1::latency_p99')).toBe(true);
   });
