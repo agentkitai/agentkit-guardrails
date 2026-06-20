@@ -13,7 +13,7 @@
   },
   "keywords": ["agentkit", "guardrails", "agentgate", "agentlens", "policy", "ai-safety"],
   "author": "Amit Paz",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/agentkitai/agentkit-guardrails"
