@@ -6,7 +6,7 @@
   </p>
   <p align="center">
     <a href="https://www.npmjs.com/package/agentkit-guardrails"><img src="https://img.shields.io/npm/v/agentkit-guardrails?label=npm" alt="npm version"></a>
-    <a href="https://opensource.org/licenses/ISC"><img src="https://img.shields.io/badge/license-ISC-blue.svg" alt="License: ISC"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
     <a href="https://github.com/agentkitai/agentkit-guardrails/actions"><img src="https://img.shields.io/github/actions/workflow/status/agentkitai/agentkit-guardrails/ci.yml?branch=main" alt="CI"></a>
   </p>
 </p>
@@ -131,6 +131,8 @@ GET /health → { "status": "ok" }
 
 See `docker-compose.yml` for a complete 3-service setup.
 
+> **Note:** The compose file is illustrative — it references images (`agentgate`, `agentlens`, `agentkit-guardrails`) that are not built by this repo and must be supplied by the sibling AgentKit services.
+
 ## Troubleshooting
 
 | Problem | Solution |
@@ -160,4 +162,4 @@ Contributions are welcome! Fork the repo, make your changes, and open a pull req
 
 ## License
 
-[ISC](LICENSE) © [Amit Paz](https://github.com/amitpaz)
+[MIT](LICENSE) © [Amit Paz](https://github.com/amitpaz)
